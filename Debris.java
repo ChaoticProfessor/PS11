@@ -29,7 +29,7 @@ public class Debris extends Participant
         Path2D.Double poly = new Path2D.Double();
 
         poly.moveTo(x, y);
-        poly.lineTo(x + RANDOM.nextInt(5), y + RANDOM.nextInt(7));
+        poly.lineTo(x + RANDOM.nextInt(15), y + RANDOM.nextInt(10));
         poly.closePath();
 
         outline = poly;
