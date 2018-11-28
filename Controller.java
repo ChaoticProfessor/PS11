@@ -107,6 +107,19 @@ public class Controller implements KeyListener, ActionListener
         addParticipant(new Asteroid(0, 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
         addParticipant(new Asteroid(0, 1, EDGE_OFFSET, EDGE_OFFSET, 3, this));
     }
+    
+         /**
+    * Place A random amount of Debris wherever something blows up
+    */
+      private void placeDebris (int x, int y)
+    {
+        
+        for(int i = 0; i <= RANDOM.nextInt(5); i++)
+        {
+        addParticipant(new Debris(x,y));
+        }
+
+    }
 
     /**
      * Clears the screen so that nothing is displayed
@@ -159,7 +172,10 @@ public class Controller implements KeyListener, ActionListener
      */
     public void shipDestroyed ()
     {
-        // Null out the ship
+        //Gets the location of the ship and places Debris accordingly
+        placeDebris(ship.getX(), ship.getY());
+       
+       // Null out the ship
         ship = null;
 
         // Display a legend
