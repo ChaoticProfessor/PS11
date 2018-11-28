@@ -269,9 +269,21 @@ public class Controller implements KeyListener, ActionListener
     @Override
     public void keyPressed (KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT && ship != null)
+           if ((e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) && ship != null)
         {
             ship.turnRight();
+        }
+        if ((e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)&& ship != null)
+        {
+            ship.turnLeft();
+        }
+        if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W )&& ship != null)
+        {
+            ship.accelerate();
+        }
+        if ((e.getKeyCode() == KeyEvent.VK_DOWN|| e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_SPACE )&& ship != null)
+        {
+            ship.accelerate();
         }
     }
 
