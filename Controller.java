@@ -111,7 +111,7 @@ public class Controller implements KeyListener, ActionListener
          /**
     * Place A random amount of Debris wherever something blows up
     */
-      private void placeDebris (int x, int y)
+      private void placeDebris (double x, double y)
     {
         
         for(int i = 0; i <= RANDOM.nextInt(5); i++)
