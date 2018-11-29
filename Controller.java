@@ -5,7 +5,9 @@ import java.awt.event.*;
 import java.util.Iterator;
 import javax.swing.*;
 import asteroids.participants.Asteroid;
+import asteroids.participants.Debris;
 import asteroids.participants.Ship;
+import asteroids.participants.Bullet;
 
 /**
  * Controls a game of Asteroids.
@@ -17,6 +19,8 @@ public class Controller implements KeyListener, ActionListener
 
     /** The ship (if one is active) or null (otherwise) */
     private Ship ship;
+
+    private Bullet bullet;
 
     /** When this timer goes off, it is time to refresh the animation */
     private Timer refreshTimer;
@@ -72,7 +76,7 @@ public class Controller implements KeyListener, ActionListener
     {
         // Clear the screen, reset the level, and display the legend
         clear();
-        display.setLegend("Lab Change Made");
+        display.setLegend("Asteroids");
 
         // Place four asteroids near the corners of the screen.
         placeAsteroids();
@@ -97,6 +101,7 @@ public class Controller implements KeyListener, ActionListener
         ship = new Ship(SIZE / 2, SIZE / 2, -Math.PI / 2, this);
         addParticipant(ship);
         display.setLegend("");
+
     }
 
     /**
@@ -107,16 +112,16 @@ public class Controller implements KeyListener, ActionListener
         addParticipant(new Asteroid(0, 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
         addParticipant(new Asteroid(0, 1, EDGE_OFFSET, EDGE_OFFSET, 3, this));
     }
-    
-         /**
-    * Place A random amount of Debris wherever something blows up
-    */
-      private void placeDebris (double x, double y)
+
+    /**
+     * Place A random amount of Debris wherever something blows up
+     */
+    private void placeDebris (double x, double y)
     {
-        
-        for(int i = 0; i <= RANDOM.nextInt(5); i++)
+
+        for (int i = 0; i <= RANDOM.nextInt(5); i++)
         {
-        addParticipant(new Debris(x,y));
+            addParticipant(new Debris(x, y));
         }
 
     }
@@ -144,9 +149,6 @@ public class Controller implements KeyListener, ActionListener
 
         // Place the ship
         placeShip();
-        
-        
-
 
         // Reset statistics
         lives = 1;
@@ -172,10 +174,10 @@ public class Controller implements KeyListener, ActionListener
      */
     public void shipDestroyed ()
     {
-        //Gets the location of the ship and places Debris accordingly
+        // Gets the location of the ship and places Debris accordingly
         placeDebris(ship.getX(), ship.getY());
-       
-       // Null out the ship
+
+        // Null out the ship
         ship = null;
 
         // Display a legend
@@ -191,33 +193,8 @@ public class Controller implements KeyListener, ActionListener
     /**
      * An asteroid has been destroyed
      */
-    public void asteroidDestroyed(Asteroid a)
+    public void asteroidDestroyed ()
     {
-        int size = a.getSize();
-
-        
-        if(size == 2)
-        {
-            //Creates two smaller Asteroids of semi-random size
-            addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(1), a.getX(), a.getY(), 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(1), a.getX(), a.getY(), 3, this));
-        }
-        else if(size == 1)
-        {
-            //creates two small Asteroids
-            addParticipant(new Asteroid(RANDOM.nextInt(3), 0, a.getX(), a.getY(), 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(3), 0, a.getX(), a.getY(), 3, this));
-        }
-  
-        
-        
-        //Creates Debris at the site of the asteroids destruction
-         placeDebris(a.getX(), a.getY());  
-        
-        
-        
-        
-        
         // If all the asteroids are gone, schedule a transition
         if (pstate.countAsteroids() == 0)
         {
@@ -239,6 +216,7 @@ public class Controller implements KeyListener, ActionListener
     @Override
     public void actionPerformed (ActionEvent e)
     {
+
         // The start button has been pressed. Stop whatever we're doing
         // and bring up the initial screen
         if (e.getSource() instanceof JButton)
@@ -249,6 +227,26 @@ public class Controller implements KeyListener, ActionListener
         // Time to refresh the screen and deal with keyboard input
         else if (e.getSource() == refreshTimer)
         {
+            if (ship != null)
+            {
+                if (ship.getIsTurningRight())
+                {
+                    ship.turnRight();
+                }
+
+                if (ship.getIsTurningLeft())
+                {
+                    ship.turnLeft();
+                }
+
+                if (ship.getIsAccellerating())
+                {
+                    ship.accelerate();
+                }
+                
+                
+            }
+            
             // It may be time to make a game transition
             performTransition();
 
@@ -294,21 +292,23 @@ public class Controller implements KeyListener, ActionListener
     @Override
     public void keyPressed (KeyEvent e)
     {
-           if ((e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) && ship != null)
+        if ((e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) && ship != null)
         {
-            ship.turnRight();
+            ship.setIsTurningRight(true);
         }
-        if ((e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)&& ship != null)
+        if ((e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) && ship != null)
         {
-            ship.turnLeft();
+            ship.setIsTurningLeft(true);
         }
-        if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W )&& ship != null)
+        if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) && ship != null)
         {
-            ship.accelerate();
+            ship.setIsAccellerating(true);
         }
-        if ((e.getKeyCode() == KeyEvent.VK_DOWN|| e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_SPACE )&& ship != null)
+        if ((e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S
+                || e.getKeyCode() == KeyEvent.VK_SPACE) && ship != null)
         {
-            ship.accelerate();
+            bullet = new Bullet(this,ship);
+            addParticipant(bullet);
         }
     }
 
@@ -326,5 +326,19 @@ public class Controller implements KeyListener, ActionListener
     @Override
     public void keyReleased (KeyEvent e)
     {
+        if ((e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) && ship != null)
+        {
+            ship.setIsTurningRight(false);
+        }
+        if ((e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) && ship != null)
+        {
+            ship.setIsTurningLeft(false);
+        }
+        if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) && ship != null)
+        {
+            ship.setIsAccellerating(false);
+        }
+        
+        
     }
 }
