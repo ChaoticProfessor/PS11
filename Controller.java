@@ -34,6 +34,12 @@ public class Controller implements KeyListener, ActionListener
 
     /** Number of lives left */
     private int lives;
+    
+    /**Level number */
+    private int level;
+    
+    /**Score Value*/
+    private int score;
 
     /** The game display */
     private Display display;
@@ -67,6 +73,33 @@ public class Controller implements KeyListener, ActionListener
     public Ship getShip ()
     {
         return ship;
+    }
+    
+        /**
+     * Returns the number of lives
+     */
+    
+    public int getLives ()
+    {
+        return lives;
+    }
+    
+    /**
+     * Returns what level the player is on
+     */
+    
+    public int getLevel()
+    {
+        return level;
+    }
+    
+    /**
+     * Returns the current Score
+     */
+    
+    public int getScore()
+    {
+        return score;
     }
 
     /**
@@ -152,6 +185,8 @@ public class Controller implements KeyListener, ActionListener
 
         // Reset statistics
         lives = 1;
+        level = 1;
+        score = 0;
 
         // Start listening to events (but don't listen twice)
         display.removeKeyListener(this);
@@ -194,7 +229,7 @@ public class Controller implements KeyListener, ActionListener
      * An asteroid has been destroyed
      */
    public void asteroidDestroyed (Asteroid a)
-    {
+       {
         int size = a.getSize();
 
         if (size == 2)
@@ -202,12 +237,18 @@ public class Controller implements KeyListener, ActionListener
             // Creates two smaller Asteroids of semi-random size
             addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(1), a.getX(), a.getY(), 3, this));
             addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(1), a.getX(), a.getY(), 3, this));
+            score = score + 20;
         }
         else if (size == 1)
         {
             // creates two small Asteroids
             addParticipant(new Asteroid(RANDOM.nextInt(3), 0, a.getX(), a.getY(), 3, this));
             addParticipant(new Asteroid(RANDOM.nextInt(3), 0, a.getX(), a.getY(), 3, this));
+            score = score + 50;
+        }
+        else
+        {
+            score = score + 100;
         }
 
         // Creates Debris at the site of the asteroids destruction
@@ -216,6 +257,7 @@ public class Controller implements KeyListener, ActionListener
         // If all the asteroids are gone, schedule a transition
         if (pstate.countAsteroids() == 0)
         {
+            level++;
             scheduleTransition(END_DELAY);
         }
     }
