@@ -193,8 +193,26 @@ public class Controller implements KeyListener, ActionListener
     /**
      * An asteroid has been destroyed
      */
-    public void asteroidDestroyed ()
+   public void asteroidDestroyed (Asteroid a)
     {
+        int size = a.getSize();
+
+        if (size == 2)
+        {
+            // Creates two smaller Asteroids of semi-random size
+            addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(1), a.getX(), a.getY(), 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(1), a.getX(), a.getY(), 3, this));
+        }
+        else if (size == 1)
+        {
+            // creates two small Asteroids
+            addParticipant(new Asteroid(RANDOM.nextInt(3), 0, a.getX(), a.getY(), 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(3), 0, a.getX(), a.getY(), 3, this));
+        }
+
+        // Creates Debris at the site of the asteroids destruction
+        placeDebris(a.getX(), a.getY());
+
         // If all the asteroids are gone, schedule a transition
         if (pstate.countAsteroids() == 0)
         {
