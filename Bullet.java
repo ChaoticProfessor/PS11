@@ -31,12 +31,14 @@ public class Bullet extends Participant implements AsteroidDestroyer
     {
         int x=(int)ship.getX();
         int y=(int)ship.getY();
-        double direction=ship.getRotation() - Math.PI/2;
+        double direction=ship.getRotation();
         
         this.controller = controller;
         setPosition(x, y);
-        setRotation(direction);
-        setSpeed(BULLET_SPEED);
+        setRotation(direction-Math.PI/2);
+        setVelocity(BULLET_SPEED,direction);
+        
+        
 
         Path2D.Double poly = new Path2D.Double();
         poly.moveTo(0, 0);
