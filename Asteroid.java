@@ -148,7 +148,7 @@ public class Asteroid extends Participant implements ShipDestroyer
             Participant.expire(this);
 
             // Inform the controller
-            controller.asteroidDestroyed();
+            controller.asteroidDestroyed(this);
         }
     }
 }
