@@ -40,6 +40,9 @@ public class Controller implements KeyListener, ActionListener
     
     /**Score Value*/
     private int score;
+    
+    /** number of bullets in the game */
+    public int numBullets;
 
     /** The game display */
     private Display display;
@@ -149,7 +152,7 @@ public class Controller implements KeyListener, ActionListener
     /**
      * Place A random amount of Debris wherever something blows up
      */
-    public void placeDebris (double x, double y)
+    private void placeDebris (double x, double y)
     {
 
         for (int i = 0; i <= RANDOM.nextInt(5); i++)
@@ -187,6 +190,7 @@ public class Controller implements KeyListener, ActionListener
         lives = 1;
         level = 1;
         score = 0;
+        numBullets=0;
 
         // Start listening to events (but don't listen twice)
         display.removeKeyListener(this);
@@ -325,6 +329,16 @@ public class Controller implements KeyListener, ActionListener
     {
         return pstate.getParticipants();
     }
+    
+    public int getBullets()
+    {
+        return numBullets;
+    }
+    
+    public void setBullets(int num)
+    {
+        numBullets=num;
+    }
 
     /**
      * If the transition time has been reached, transition to a new state
@@ -367,8 +381,14 @@ public class Controller implements KeyListener, ActionListener
         if ((e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S
                 || e.getKeyCode() == KeyEvent.VK_SPACE) && ship != null)
         {
+            numBullets++;
             bullet = new Bullet(this,ship);
             addParticipant(bullet);
+            if(numBullets>8)
+            {
+                Participant.expire(bullet);
+                numBullets--;
+            }
         }
     }
 
