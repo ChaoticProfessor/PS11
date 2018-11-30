@@ -57,11 +57,13 @@ public class Bullet extends Participant implements AsteroidDestroyer
     public void countdownComplete (Object payload)
     {
         // makes the bullet disappear after the given time Bullet_Duration
-        if (payload.equals("die"))
-        {
-            new ParticipantCountdownTimer(this, "die",BULLET_DURATION );
-        }
+        
+            new ParticipantCountdownTimer(this, BULLET_DURATION );
+            die();
+        
     }
+    
+ 
     
     @Override
     public void move ()
@@ -80,7 +82,14 @@ public class Bullet extends Participant implements AsteroidDestroyer
     @Override
     public void collidedWith (Participant p)
     {
-        
+        if (p instanceof ShipDestroyer)
+        {
+            // Expire the ship from the game
+            Participant.expire(this);
+           controller.numBullets--;
+
+            
+        }
         // TODO Auto-generated method stub
         
     }
