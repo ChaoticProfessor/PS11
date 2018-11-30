@@ -18,6 +18,16 @@ public class Ship extends Participant implements AsteroidDestroyer
 
     /** Game controller */
     private Controller controller;
+    
+    private boolean isTurningRight;
+    
+    private boolean isTurningLeft;
+    
+    private boolean isAccellerating;
+    
+    
+    
+    
 
     /**
      * Constructs a ship at the specified coordinates that is pointed in the given direction.
@@ -29,7 +39,7 @@ public class Ship extends Participant implements AsteroidDestroyer
         setRotation(direction);
 
         Path2D.Double poly = new Path2D.Double();
-        poly.moveTo(21, 21);
+        poly.moveTo(21, 0);
         poly.lineTo(-21, 12);
         poly.lineTo(-14, 10);
         poly.lineTo(-14, -10);
@@ -38,7 +48,7 @@ public class Ship extends Participant implements AsteroidDestroyer
         outline = poly;
 
         // Schedule an acceleration in two seconds
-        new ParticipantCountdownTimer(this, "move", 2000);
+        //new ParticipantCountdownTimer(this, "move", 2000);
     }
 
     /**
@@ -59,6 +69,36 @@ public class Ship extends Participant implements AsteroidDestroyer
         Point2D.Double point = new Point2D.Double(20, 0);
         transformPoint(point);
         return point.getY();
+    }
+    
+    public boolean getIsTurningRight()
+    {
+        return isTurningRight;
+    }
+    
+    public void setIsTurningRight(boolean b)
+    {
+        isTurningRight = b;
+    }
+    
+    public boolean getIsTurningLeft()
+    {
+        return isTurningLeft;
+    }
+    
+    public void setIsTurningLeft(boolean b)
+    {
+        isTurningLeft = b;
+    }
+    
+    public boolean getIsAccellerating()
+    {
+        return isAccellerating;
+    }
+    
+    public void setIsAccellerating(boolean b)
+    {
+        isAccellerating = b;
     }
 
     @Override
@@ -82,9 +122,12 @@ public class Ship extends Participant implements AsteroidDestroyer
      */
     public void turnRight ()
     {
+        
         rotate(Math.PI / 16);
+        
     }
 
+    
     /**
      * Turns left by Pi/16 radians
      */
@@ -100,9 +143,8 @@ public class Ship extends Participant implements AsteroidDestroyer
     {
         accelerate(SHIP_ACCELERATION);
     }
+    
 
-
-   
     /**
      * When a Ship collides with a ShipDestroyer, it expires
      */
@@ -113,27 +155,11 @@ public class Ship extends Participant implements AsteroidDestroyer
         {
             // Expire the ship from the game
             Participant.expire(this);
-            
-            //Generate Debris
-            controller.placeDebris(this.getX(), this.getY());
 
             // Tell the controller the ship was destroyed
-           controller.shipDestroyed();
+            controller.shipDestroyed();
         }
     }
 
-    /**
-     * This method is invoked when a ParticipantCountdownTimer completes its countdown.
-     */
-    @Override
-    public void countdownComplete (Object payload)
-    {
-        // Give a burst of acceleration, then schedule another
-        // burst for 200 msecs from now.
-        if (payload.equals("move"))
-        {
-            accelerate();
-            new ParticipantCountdownTimer(this, "move", 200);
-        }
-    }
+  
 }
