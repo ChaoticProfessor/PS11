@@ -13,23 +13,21 @@ public class Debris extends Participant
 
     public Debris (double x, double y)
     {
-
+       
         
+        generateDebrisOutline();
         setPosition(x, y);
-        setVelocity(RANDOM.nextInt(5), RANDOM.nextDouble() * 2 * Math.PI);
-        setRotation(2 * Math.PI * RANDOM.nextDouble());
-        generateDebrisOutline(x, y);
-        
+        setVelocity(RANDOM.nextInt(2), RANDOM.nextDouble() * 2 * Math.PI);
 
-        
+    
     }
 
-    public void generateDebrisOutline (double x, double y)
+    public void generateDebrisOutline ()
     {
         Path2D.Double poly = new Path2D.Double();
 
-        poly.moveTo(x, y);
-        poly.lineTo(x + RANDOM.nextInt(15), y + RANDOM.nextInt(10));
+        poly.moveTo(0, 0);
+        poly.lineTo(RANDOM.nextInt(10),RANDOM.nextInt(10));
         poly.closePath();
 
         outline = poly;
@@ -44,7 +42,7 @@ public class Debris extends Participant
     @Override
     public void collidedWith (Participant p)
     {
-        
+
     }
 
 }
