@@ -51,8 +51,30 @@ public class Screen extends JPanel
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-        // Do the default painting
+    // Do the default painting
         super.paintComponent(g);
+        
+        //Paints the Lives
+        Path2D.Double poly = new Path2D.Double();
+        
+
+        
+        for(int i = 1; i <= controller.lives; i++)
+        {
+        poly.moveTo(21 + (50 * i), 50);
+        poly.lineTo(-21 + (50 * i), 12 + 50);
+        poly.lineTo(-14 + (50 * i), 10 + 50);
+        poly.lineTo(-14 + (50 * i), -10 + 50);
+        poly.lineTo(-21 + (50 * i), -12 + 50);
+        poly.closePath();
+ 
+        lifeOutline = poly;
+       
+        g.draw(lifeOutline);
+        }
+        
+        
+        
 
         // Draw each participant in its proper place
         Iterator<Participant> iter = controller.getParticipants();
@@ -61,8 +83,12 @@ public class Screen extends JPanel
             iter.next().draw(g);
         }
 
+
         // Draw the legend across the middle of the panel
         int size = g.getFontMetrics().stringWidth(legend);
         g.drawString(legend, (SIZE - size) / 2, SIZE / 2);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
+        g.drawString(String.valueOf(controller.getLevel()), 600, 50);
+        g.drawString(String.valueOf(controller.getScore()), 600, 100);
     }
 }
