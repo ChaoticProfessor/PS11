@@ -9,7 +9,6 @@ import asteroids.game.Controller;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
 
-
 /**
  * represents Bullets
  */
@@ -18,7 +17,7 @@ public class Bullet extends Participant implements AsteroidDestroyer
 
     /** The outline of the Bullet */
     private Shape outline;
-    
+
     private boolean isShot;
 
     /** Game controller */
@@ -29,51 +28,42 @@ public class Bullet extends Participant implements AsteroidDestroyer
      */
     public Bullet (Controller controller, Ship ship)
     {
-        int x=(int)ship.getX();
-        int y=(int)ship.getY();
-        double direction=ship.getRotation();
-        
+        int x = (int) ship.getX();
+        int y = (int) ship.getY();
+        double direction = ship.getRotation();
+
         this.controller = controller;
         setPosition(x, y);
-        setRotation(direction-Math.PI/2);
-        setVelocity(BULLET_SPEED,direction);
-        
-        
+        setRotation(direction - Math.PI / 2);
+        setVelocity(BULLET_SPEED, direction);
+
+        new ParticipantCountdownTimer(this, BULLET_DURATION);
 
         Path2D.Double poly = new Path2D.Double();
         poly.moveTo(0, 0);
-        poly.lineTo(4,0);
-        poly.lineTo(4,4);
-        poly.lineTo(2,6);
-        poly.lineTo(0,4);
+        poly.lineTo(4, 0);
+        poly.lineTo(4, 4);
+        poly.lineTo(2, 6);
+        poly.lineTo(0, 4);
         poly.closePath();
         outline = poly;
 
     }
-    public void die()
-    {
-        Participant.expire(this);
-    }
-    
-    
+
     public void countdownComplete (Object payload)
     {
         // makes the bullet disappear after the given time Bullet_Duration
-        
-            new ParticipantCountdownTimer(this, BULLET_DURATION );
-            die();
-        
+
+        Participant.expire(this);
+        controller.numBullets--;
     }
-    
- 
-    
+
     @Override
     public void move ()
     {
         super.move();
     }
-    
-    
+
     @Override
     protected Shape getOutline ()
     {
@@ -88,12 +78,11 @@ public class Bullet extends Participant implements AsteroidDestroyer
         {
             // Expire the ship from the game
             Participant.expire(this);
-           controller.numBullets--;
+            controller.numBullets--;
 
-            
         }
         // TODO Auto-generated method stub
-        
+
     }
 
 }
