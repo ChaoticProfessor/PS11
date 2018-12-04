@@ -161,6 +161,22 @@ public class Controller implements KeyListener, ActionListener
         }
 
     }
+    
+    /**
+     * Place an alien ship
+     */
+    
+    public void placeAlien(double x, double y)
+    {
+        if(level == 2)
+        {
+        addParticipant(new Alien(x,y,2));
+        }
+        else 
+        {
+         addParticipant(new Alien(x,y,1));
+        }
+    }
 
     /**
      * Clears the screen so that nothing is displayed
