@@ -2,6 +2,7 @@ package asteroids.game;
 
 import static asteroids.game.Constants.*;
 import java.awt.*;
+import java.awt.geom.Path2D;
 import java.util.Iterator;
 import javax.swing.*;
 
@@ -16,6 +17,8 @@ public class Screen extends JPanel
 
     /** Game controller */
     private Controller controller;
+    
+    private Shape lifeOutline;
 
     /**
      * Creates an empty screen
@@ -59,7 +62,7 @@ public class Screen extends JPanel
         
 
         
-        for(int i = 1; i <= controller.lives; i++)
+        for(int i = 1; i <= controller.getLives(); i++)
         {
         poly.moveTo(21 + (50 * i), 50);
         poly.lineTo(-21 + (50 * i), 12 + 50);
