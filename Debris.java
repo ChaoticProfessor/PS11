@@ -2,6 +2,7 @@ package asteroids.participants;
 
 import static asteroids.game.Constants.*;
 import asteroids.game.Participant;
+import asteroids.game.ParticipantCountdownTimer;
 import java.awt.Shape;
 import java.awt.geom.*;
 
@@ -18,7 +19,7 @@ public class Debris extends Participant
         generateDebrisOutline();
         setPosition(x, y);
         setVelocity(RANDOM.nextInt(2), RANDOM.nextDouble() * 2 * Math.PI);
-
+        new ParticipantCountdownTimer(this, 2500);
     
     }
 
@@ -31,6 +32,16 @@ public class Debris extends Participant
         poly.closePath();
 
         outline = poly;
+    }
+    /**
+     * Expires the debris after 500 miliseconds
+     */
+    
+    public void countdownComplete (Object payload)
+    {
+
+            Participant.expire(this);;
+        
     }
 
     @Override
