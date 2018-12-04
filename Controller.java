@@ -352,10 +352,14 @@ public class Controller implements KeyListener, ActionListener
             transitionTime = Long.MAX_VALUE;
 
             // If there are no lives left, the game is over. Show the final
-            // screen.
+            // screen. If there are lives left, it places a new ship in the center
             if (lives <= 0)
             {
                 finalScreen();
+            }
+             else
+            {
+                placeShip();
             }
         }
     }
