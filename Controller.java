@@ -19,6 +19,9 @@ public class Controller implements KeyListener, ActionListener
 
     /** The ship (if one is active) or null (otherwise) */
     private Ship ship;
+    
+    /** The alien ship if active or null otherwise*/
+    private Alien alien;
 
     private Bullet bullet;
 
@@ -148,6 +151,27 @@ public class Controller implements KeyListener, ActionListener
         addParticipant(new Asteroid(0, 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
         addParticipant(new Asteroid(0, 1, EDGE_OFFSET, EDGE_OFFSET, 3, this));
     }
+    
+     /**
+     * Place an alien ship
+     */
+
+    public void placeAlien (double x, double y)
+    {
+        if (level == 2)
+        {
+
+            Participant.expire(alien);
+            alien = new Alien(x, y, 2);
+            addParticipant(alien);
+        }
+        else
+        {
+            Participant.expire(alien);
+            alien = new Alien(x, y, 1);
+            addParticipant(alien);
+        }
+    }
 
     /**
      * Place A random amount of Debris wherever something blows up
@@ -270,6 +294,38 @@ public class Controller implements KeyListener, ActionListener
             level++;
             scheduleTransition(END_DELAY);
         }
+    }
+      /**
+     * When an alien is destroyed it applies the proper score boost and sets a timer to spawn a new one in
+     * 5-10 Seconds
+     */
+
+    public void alienDestroyed ()
+    {
+        if (getLevel() == 2)
+        {
+            score = score + 200;
+        }
+        else
+        {
+            score = score + 1000;
+        }
+        Participant.expire(alien);
+        new ParticipantCountdownTimer(alien, 5000 + (RANDOM.nextInt(5) * 1000));
+
+    }
+    
+    /**
+     * Activates when the timer from the alienDestroyed Method and places a new alien.
+     */
+    
+    public void countdownComplete()
+    {
+        if(alien.isExpired())
+        {
+            placeAlien(-50, -50);
+        }
+  
     }
 
     /**
