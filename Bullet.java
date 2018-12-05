@@ -49,11 +49,32 @@ public class Bullet extends Participant implements AsteroidDestroyer
         outline = poly;
 
     }
-    public Bullet (Controller controller, Alien alien)
+    
+    public Bullet (Controller controller, Alien alien, Ship ship)
     {
-        double x=alien.getX();
-        double y=alien.getY();
-        double direction= (RANDOM.nextInt(6) * Math.PI / 3);
+        double x=0;
+        double y=0;
+        double direction =0;
+        try {
+        x=alien.getX();
+        y=alien.getY();
+        
+
+        
+        if(alien.getScalar()==2)
+        {
+            direction= (RANDOM.nextInt(6) * Math.PI / 3); 
+        }
+        else if(alien.getScalar()==1 && ship!=null)
+        {
+           direction=  Math.atan((ship.getY()-this.getY())/(ship.getX()-this.getX()));
+        }
+        }
+        catch(NullPointerException e)
+        {
+            
+        }
+        
         
         this.controller = controller;
         setPosition(x, y);
@@ -72,7 +93,6 @@ public class Bullet extends Participant implements AsteroidDestroyer
         outline = poly;
 
     }
-
 
     public void countdownComplete (Object payload)
     {
