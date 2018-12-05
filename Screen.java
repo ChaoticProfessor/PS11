@@ -92,6 +92,6 @@ public class Screen extends JPanel
         g.drawString(legend, (SIZE - size) / 2, SIZE / 2);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
         g.drawString(String.valueOf(controller.getLevel()), 600, 50);
-        g.drawString(String.valueOf(controller.getScore()), 600, 100);
+        g.drawString(String.valueOf(controller.getScore()), 65, 30);
     }
 }
