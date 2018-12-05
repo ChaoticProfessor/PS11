@@ -64,12 +64,12 @@ public class Screen extends JPanel
         
         for(int i = 1; i <= controller.getLives(); i++)
         {
-        poly.moveTo(21 + (50 * i), 50);
-        poly.lineTo(-21 + (50 * i), 12 + 50);
-        poly.lineTo(-14 + (50 * i), 10 + 50);
-        poly.lineTo(-14 + (50 * i), -10 + 50);
-        poly.lineTo(-21 + (50 * i), -12 + 50);
-        poly.closePath();
+            poly.moveTo(0 + 10 +(30 * i) , 30 + 20);
+            poly.lineTo(12 + 10 +(30 * i), 21 + 70);
+            poly.lineTo(10 + 10 +(30 * i), 14 + 70);
+            poly.lineTo(-10 + 10 + (30 * i), 14 + 70);
+            poly.lineTo(-12 + 10 +(30 * i), 21 + 70);
+            poly.closePath();
  
         lifeOutline = poly;
        
