@@ -143,13 +143,37 @@ public class Controller implements KeyListener, ActionListener
 
     }
 
-    /**
      * Places an asteroid near one corner of the screen. Gives it a random velocity and rotation.
      */
     private void placeAsteroids ()
     {
-        addParticipant(new Asteroid(0, 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
-        addParticipant(new Asteroid(0, 1, EDGE_OFFSET, EDGE_OFFSET, 3, this));
+
+        if (level == 1)
+        {
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+        }
+        else if (level == 2)
+        {
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4),2, EDGE_OFFSET / 2, -EDGE_OFFSET, 3, this));
+        }
+        else
+        {
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 1 + RANDOM.nextInt(2), EDGE_OFFSET / 2, EDGE_OFFSET, 3, this));
+
+        }
+
     }
     
      /**
