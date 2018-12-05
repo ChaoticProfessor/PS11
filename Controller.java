@@ -156,19 +156,19 @@ public class Controller implements KeyListener, ActionListener
      * Place an alien ship
      */
 
-    public void placeAlien (double x, double y)
+    public void placeAlien ()
     {
         if (level == 2)
         {
 
             Participant.expire(alien);
-            alien = new Alien(x, y, 2);
+            alien = new Alien(650, 650, 2);
             addParticipant(alien);
         }
         else
         {
             Participant.expire(alien);
-            alien = new Alien(x, y, 1);
+            alien = new Alien(650, 650, 1);
             addParticipant(alien);
         }
     }
@@ -311,22 +311,9 @@ public class Controller implements KeyListener, ActionListener
             score = score + 1000;
         }
         Participant.expire(alien);
-        new ParticipantCountdownTimer(alien, 5000 + (RANDOM.nextInt(5) * 1000));
-
     }
     
-    /**
-     * Activates when the timer from the alienDestroyed Method and places a new alien.
-     */
-    
-    public void countdownComplete()
-    {
-        if(alien.isExpired())
-        {
-            placeAlien(-50, -50);
-        }
-  
-    }
+   
 
     /**
      * Schedules a transition m msecs in the future
@@ -419,6 +406,19 @@ public class Controller implements KeyListener, ActionListener
             if (lives <= 0)
             {
                 finalScreen();
+            }
+            //If there are no asteroids left, resets the level
+            else if (pstate.countAsteroids() == 0)
+            {
+               clear();
+               numBullets = 0;
+               placeAsteroids();
+               placeShip();
+            }
+            //If there are lives and asteroids left, respawns the ship
+            else
+            {
+              placeShip();
             }
         }
     }
