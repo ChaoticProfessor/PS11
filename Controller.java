@@ -161,22 +161,6 @@ public class Controller implements KeyListener, ActionListener
         }
 
     }
-    
-    /**
-     * Place an alien ship
-     */
-    
-    public void placeAlien(double x, double y)
-    {
-        if(level == 2)
-        {
-        addParticipant(new Alien(x,y,2));
-        }
-        else 
-        {
-         addParticipant(new Alien(x,y,1));
-        }
-    }
 
     /**
      * Clears the screen so that nothing is displayed
@@ -203,7 +187,7 @@ public class Controller implements KeyListener, ActionListener
         placeShip();
 
         // Reset statistics
-        lives = 1;
+        lives = 3;
         level = 1;
         score = 0;
         numBullets=0;
@@ -236,13 +220,19 @@ public class Controller implements KeyListener, ActionListener
         ship = null;
 
         // Display a legend
-        display.setLegend("Ouch!");
+        display.setLegend("Get rekt, son");
 
         // Decrement lives
         lives--;
 
         // Since the ship was destroyed, schedule a transition
         scheduleTransition(END_DELAY);
+        
+        if(lives>0)
+            {
+            placeShip();
+            }
+        
     }
 
     /**
@@ -255,8 +245,8 @@ public class Controller implements KeyListener, ActionListener
         if (size == 2)
         {
             // Creates two smaller Asteroids of semi-random size
-            addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(1), a.getX(), a.getY(), 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(1), a.getX(), a.getY(), 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(2), a.getX(), a.getY(), 3, this));
+            addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(2), a.getX(), a.getY(), 3, this));
             score = score + 20;
         }
         else if (size == 1)
@@ -356,6 +346,7 @@ public class Controller implements KeyListener, ActionListener
         numBullets=num;
     }
 
+   
     /**
      * If the transition time has been reached, transition to a new state
      */
@@ -368,14 +359,10 @@ public class Controller implements KeyListener, ActionListener
             transitionTime = Long.MAX_VALUE;
 
             // If there are no lives left, the game is over. Show the final
-            // screen. If there are lives left, it places a new ship in the center
+            // screen.
             if (lives <= 0)
             {
                 finalScreen();
-            }
-             else
-            {
-                placeShip();
             }
         }
     }
