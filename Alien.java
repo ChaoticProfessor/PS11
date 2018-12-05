@@ -20,9 +20,13 @@ public class Alien extends Participant implements ShipDestroyer
     private Controller controller;
     
     private int horizontal;
+    
+    private int Scalar;
 
-    public Alien (double x, double y, int scalar)
+    public Alien (double x, double y, int scalar,Controller controller)
     {
+        this.controller= controller;
+        Scalar=scalar;
         horizontal = -1;
         setPosition(x, y);
 
@@ -40,6 +44,11 @@ public class Alien extends Participant implements ShipDestroyer
         
         new ParticipantCountdownTimer(this,"diagonal", 500);
         new ParticipantCountdownTimer(this,"switch", 10000);
+    }
+    
+    public int getScalar()
+    {
+        return Scalar;
     }
 
     public void countdownComplete(Object payload)
@@ -96,6 +105,7 @@ public class Alien extends Participant implements ShipDestroyer
             
 
             // Inform the controller
+            controller.alienDestroyed();
 
         }
 
