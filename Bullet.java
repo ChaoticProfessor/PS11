@@ -49,6 +49,30 @@ public class Bullet extends Participant implements AsteroidDestroyer
         outline = poly;
 
     }
+    public Bullet (Controller controller, Alien alien)
+    {
+        double x=alien.getX();
+        double y=alien.getY();
+        double direction= (RANDOM.nextInt(6) * Math.PI / 3);
+        
+        this.controller = controller;
+        setPosition(x, y);
+        setRotation(direction-Math.PI/2);
+        setVelocity(BULLET_SPEED,direction);
+        
+        
+
+        Path2D.Double poly = new Path2D.Double();
+        poly.moveTo(0, 0);
+        poly.lineTo(4,0);
+        poly.lineTo(4,4);
+        poly.lineTo(2,6);
+        poly.lineTo(0,4);
+        poly.closePath();
+        outline = poly;
+
+    }
+
 
     public void countdownComplete (Object payload)
     {
