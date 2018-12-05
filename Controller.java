@@ -4,6 +4,7 @@ import static asteroids.game.Constants.*;
 import java.awt.event.*;
 import java.util.Iterator;
 import javax.swing.*;
+import asteroids.participants.Alien;
 import asteroids.participants.Asteroid;
 import asteroids.participants.Debris;
 import asteroids.participants.Ship;
@@ -143,12 +144,12 @@ public class Controller implements KeyListener, ActionListener
 
     }
 
-     * Places an asteroid near one corner of the screen. Gives it a random velocity and rotation.
+     /** Places an asteroid near one corner of the screen. Gives it a random velocity and rotation.
      */
     private void placeAsteroids ()
     {
 
-        if (level == 1)
+        if (level == 1||level==0)
         {
             addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
             addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, -EDGE_OFFSET, 3, this));
@@ -266,6 +267,7 @@ public class Controller implements KeyListener, ActionListener
 
         // Null out the ship
         ship = null;
+        
 
         // Display a legend
         display.setLegend("Get rekt, son");
@@ -335,6 +337,7 @@ public class Controller implements KeyListener, ActionListener
             score = score + 1000;
         }
         Participant.expire(alien);
+        placeDebris(alien.getX(), alien.getY());
     }
     
    
