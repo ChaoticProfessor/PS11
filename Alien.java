@@ -93,7 +93,7 @@ public class Alien extends Participant implements ShipDestroyer
             Participant.expire(this);
 
             // Generate Debris
-            controller.placeDebris(this.getX(), this.getY());
+            
 
             // Inform the controller
 
