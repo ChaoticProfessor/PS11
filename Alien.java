@@ -18,10 +18,12 @@ public class Alien extends Participant implements ShipDestroyer
 
     /** The game controller */
     private Controller controller;
+    
+    private int horizontal;
 
     public Alien (double x, double y, int scalar)
     {
-
+        horizontal = -1;
         setPosition(x, y);
 
         Path2D.Double poly = new Path2D.Double();
@@ -36,37 +38,34 @@ public class Alien extends Participant implements ShipDestroyer
 
         outline = poly;
         
-        new ParticipantCountdownTimer(this, 500);
-
+        new ParticipantCountdownTimer(this,"diagonal", 500);
+        new ParticipantCountdownTimer(this,"switch", 10000);
     }
 
     public void countdownComplete(Object payload)
     {
-        int a = RANDOM.nextInt(3);
+        
+        if(payload == "diagonal")
+        {
+        int a = RANDOM.nextInt(2);
 
         if (a == 0)
         {
-            setVelocity(3, Math.PI * 2 / 3);
-            new ParticipantCountdownTimer(this, 500);
-
-        }
-        else if (a == 1)
-        {
-            setVelocity(-3, Math.PI * 2 / 3);
-            new ParticipantCountdownTimer(this, 500);
-
-        }
-        else if (a == 2)
-        {
-            setVelocity(3, Math.PI * 1 / 3);
-            new ParticipantCountdownTimer(this, 500);
+            setVelocity(3 * horizontal, Math.PI * 2 / 3);
+            new ParticipantCountdownTimer(this,"diagonal", 500);
 
         }
         else
         {
-            setVelocity(-3, Math.PI * 1 / 3);
-            new ParticipantCountdownTimer(this, 500);
+            setVelocity(3 * horizontal, Math.PI * 4 / 3);
+            new ParticipantCountdownTimer(this,"diagonal", 500);
 
+        }
+        }
+        if(payload == "switch")
+        {
+            horizontal = horizontal * -1;
+            new ParticipantCountdownTimer(this,"switch", 4000);
         }
 
     }
