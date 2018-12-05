@@ -141,6 +141,9 @@ public class Controller implements KeyListener, ActionListener
         ship = new Ship(SIZE / 2, SIZE / 2, -Math.PI / 2, this);
         addParticipant(ship);
         display.setLegend("");
+//        if(ship!=null) {
+           scheduleTransition((int)Math.round(5000*(RANDOM.nextDouble()+1)));
+//            }
 
     }
 
@@ -149,30 +152,13 @@ public class Controller implements KeyListener, ActionListener
     private void placeAsteroids ()
     {
 
-        if (level == 1||level==0)
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, EDGE_OFFSET, 3, this));
+        addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
+        for(int i = 0; i< level-1;i++)
         {
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, -EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
-        }
-        else if (level == 2)
-        {
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, -EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4),2, EDGE_OFFSET / 2, -EDGE_OFFSET, 3, this));
-        }
-        else
-        {
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, -EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, -EDGE_OFFSET, -EDGE_OFFSET, 3, this));
-            addParticipant(new Asteroid(RANDOM.nextInt(4), 1 + RANDOM.nextInt(2), EDGE_OFFSET / 2, EDGE_OFFSET, 3, this));
-
+            addParticipant(new Asteroid(RANDOM.nextInt(4), 2, EDGE_OFFSET, EDGE_OFFSET, 3, this)); 
         }
 
     }
@@ -187,13 +173,14 @@ public class Controller implements KeyListener, ActionListener
         {
 
             Participant.expire(alien);
-            alien = new Alien(650, 650, 2);
+            alien = new Alien(450, 450, 2,this);
             addParticipant(alien);
+            
         }
-        else
+        else if(level>=3)
         {
             Participant.expire(alien);
-            alien = new Alien(650, 650, 1);
+            alien = new Alien(450, 450, 1,this);
             addParticipant(alien);
         }
     }
@@ -262,11 +249,13 @@ public class Controller implements KeyListener, ActionListener
      */
     public void shipDestroyed ()
     {
+         
+        
         // Gets the location of the ship and places Debris accordingly
         placeDebris(ship.getX(), ship.getY());
 
         // Null out the ship
-        ship = null;
+        ship=null;
         
 
         // Display a legend
@@ -275,13 +264,11 @@ public class Controller implements KeyListener, ActionListener
         // Decrement lives
         lives--;
 
-        // Since the ship was destroyed, schedule a transition
+        // Since the ship was destroyed, schedule a transition 
         scheduleTransition(END_DELAY);
         
-        if(lives>0)
-            {
-            placeShip();
-            }
+        
+       
         
     }
 
@@ -328,7 +315,8 @@ public class Controller implements KeyListener, ActionListener
 
     public void alienDestroyed ()
     {
-        if (getLevel() == 2)
+        
+        if (alien.getScalar()==2)
         {
             score = score + 200;
         }
@@ -336,10 +324,25 @@ public class Controller implements KeyListener, ActionListener
         {
             score = score + 1000;
         }
-        Participant.expire(alien);
         placeDebris(alien.getX(), alien.getY());
+        
+        
+        
+        alien=null;
+        if(ship!=null) {
+        scheduleTransition((int)Math.round(5000*(RANDOM.nextDouble()+1)));
+        }
+        
     }
     
+    
+    private void alienShoot()
+    {
+        
+        bullet = new Bullet(this,alien,ship);
+        addParticipant(bullet);
+        scheduleTransition(2500);
+    }
    
 
     /**
@@ -425,8 +428,13 @@ public class Controller implements KeyListener, ActionListener
         // Do something only if the time has been reached
         if (transitionTime <= System.currentTimeMillis())
         {
+            
+            
+                
+            
             // Clear the transition time
             transitionTime = Long.MAX_VALUE;
+            
 
             // If there are no lives left, the game is over. Show the final
             // screen.
@@ -441,12 +449,19 @@ public class Controller implements KeyListener, ActionListener
                numBullets = 0;
                placeAsteroids();
                placeShip();
+               placeAlien();
             }
             //If there are lives and asteroids left, respawns the ship
-            else
+            else if(ship==null)
             {
+                
               placeShip();
             }
+            else if(alien==null)
+            {
+                placeAlien();
+            }
+           
         }
     }
 
