@@ -190,7 +190,7 @@ public class Ship extends Participant implements AsteroidDestroyer
             poly.lineTo(-21, -12);
             poly.lineTo(21, 0);
             poly.moveTo(-14,10);
-            poly.lineTo(-21, 0);
+            poly.lineTo(-28, 0);
             poly.lineTo(-14, -10);
             poly.closePath();
             outline = poly; 
