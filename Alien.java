@@ -8,24 +8,22 @@ import asteroids.destroyers.ShipDestroyer;
 import asteroids.game.Controller;
 import asteroids.game.Display;
 import asteroids.game.Participant;
+import asteroids.game.ParticipantCountdownTimer;
 
 public class Alien extends Participant implements ShipDestroyer
 {
-    
-    /**The alien shape*/
+
+    /** The alien shape */
     private Shape outline;
 
     /** The game controller */
     private Controller controller;
-    
-    
-    
-    public Alien(double x,double y, int scalar)
+
+    public Alien (double x, double y, int scalar)
     {
-        
-        
-        setPosition(x,y);
-        
+
+        setPosition(x, y);
+
         Path2D.Double poly = new Path2D.Double();
         poly.moveTo(0, 0);
         poly.lineTo(20 * scalar, 0 * scalar);
@@ -35,59 +33,58 @@ public class Alien extends Participant implements ShipDestroyer
         poly.lineTo(5 * scalar, -5 * scalar);
         poly.lineTo(15 * scalar, -5 * scalar);
         poly.lineTo(20 * scalar, 0 * scalar);
-       
+
         outline = poly;
- 
+        
+        new ParticipantCountdownTimer(this, 500);
+
     }
-    /**
-    * When called it creates a random movement sequence that moves the alien ship in 
-    * a diagonal and horizontal path
-    */
-    public void alienMovement ()
+
+    public void countdownComplete(Object payload)
     {
         int a = RANDOM.nextInt(3);
 
         if (a == 0)
         {
             setVelocity(3, Math.PI * 2 / 3);
-            setVelocity(3, Math.PI);
-            setVelocity(3, Math.PI * 5 / 3);
+            new ParticipantCountdownTimer(this, 500);
+
         }
         else if (a == 1)
         {
             setVelocity(-3, Math.PI * 2 / 3);
-            setVelocity(-3, Math.PI);
-            setVelocity(-3, Math.PI * 5 / 3);
+            new ParticipantCountdownTimer(this, 500);
+
         }
         else if (a == 2)
         {
             setVelocity(3, Math.PI * 1 / 3);
-            setVelocity(3, Math.PI);
-            setVelocity(3, Math.PI * 4 / 3);
+            new ParticipantCountdownTimer(this, 500);
+
         }
         else
         {
             setVelocity(-3, Math.PI * 1 / 3);
-            setVelocity(-3, Math.PI);
-            setVelocity(-3, Math.PI * 4 / 3);
+            new ParticipantCountdownTimer(this, 500);
+
         }
 
     }
+
     /**
      * Generate the outline of the Ship
      */
     @Override
     protected Shape getOutline ()
     {
- 
+
         return outline;
     }
 
-    
     /**
      * Expires ship and spawns debris in contact with an asteroidDestroyer participant
      */
-    
+
     @Override
     public void collidedWith (Participant p)
     {
@@ -95,21 +92,14 @@ public class Alien extends Participant implements ShipDestroyer
         {
             // Expire the asteroid
             Participant.expire(this);
-            
-            //Generate Debris
+
+            // Generate Debris
             controller.placeDebris(this.getX(), this.getY());
 
             // Inform the controller
-            
 
         }
-        
+
     }
-    
-    
-    
-    
-    
-    
-    
+
 }
