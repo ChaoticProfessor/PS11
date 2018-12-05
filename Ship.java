@@ -25,6 +25,9 @@ public class Ship extends Participant implements AsteroidDestroyer
     
     private boolean isAccellerating;
     
+    /**Allows for the fire to alternate*/
+    private boolen on;
+    
     
     
     
@@ -44,8 +47,18 @@ public class Ship extends Participant implements AsteroidDestroyer
         poly.lineTo(-14, 10);
         poly.lineTo(-14, -10);
         poly.lineTo(-21, -12);
+        poly.lineTo(21, 0);
+        poly.moveTo(-14,10);
+        poly.lineTo(-21, 0);
+        poly.lineTo(-14, -10);
         poly.closePath();
         outline = poly;
+        
+        
+        on = true;
+
+        // Schedule the fire every .05 seconds
+        new ParticipantCountdownTimer(this, 50);
 
         // Schedule an acceleration in two seconds
         //new ParticipantCountdownTimer(this, "move", 2000);
@@ -164,6 +177,44 @@ public class Ship extends Participant implements AsteroidDestroyer
             // Tell the controller the ship was destroyed
             controller.shipDestroyed();
         }
+    }
+    
+     /** Places the fire accordingly
+     * 
+     */
+    public void countdownComplete(Object payload)
+    {
+        if(on)
+        {
+            Path2D.Double poly = new Path2D.Double();
+            poly.moveTo(21, 0);
+            poly.lineTo(-21, 12);
+            poly.lineTo(-14, 10);
+            poly.lineTo(-14, -10);
+            poly.lineTo(-21, -12);
+            poly.lineTo(21, 0);
+            poly.moveTo(-14,10);
+            poly.lineTo(-21, 0);
+            poly.lineTo(-14, -10);
+            poly.closePath();
+            outline = poly; 
+            on = false;
+            new ParticipantCountdownTimer(this,50);
+        }
+        else
+        {
+            Path2D.Double poly = new Path2D.Double();
+            poly.moveTo(21, 0);
+            poly.lineTo(-21, 12);
+            poly.lineTo(-14, 10);
+            poly.lineTo(-14, -10);
+            poly.lineTo(-21, -12);
+            poly.lineTo(21, 0);
+            outline = poly; 
+            on = true;
+            new ParticipantCountdownTimer(this,50);
+        }
+        
     }
 
   
