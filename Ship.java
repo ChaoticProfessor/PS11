@@ -48,11 +48,7 @@ public class Ship extends Participant implements AsteroidDestroyer
         poly.lineTo(-14, -10);
         poly.lineTo(-21, -12);
         poly.lineTo(21, 0);
-        poly.moveTo(-14,10);
-        poly.lineTo(-21, 0);
-        poly.lineTo(-14, -10);
-        poly.closePath();
-        outline = poly;
+        outline = poly; 
         
         
         on = true;
@@ -182,9 +178,9 @@ public class Ship extends Participant implements AsteroidDestroyer
      /** Places the fire accordingly
      * 
      */
-    public void countdownComplete(Object payload)
+   public void countdownComplete(Object payload)
     {
-        if(on)
+        if(on && getIsAccellerating())
         {
             Path2D.Double poly = new Path2D.Double();
             poly.moveTo(21, 0);
