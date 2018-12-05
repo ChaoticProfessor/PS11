@@ -26,7 +26,7 @@ public class Ship extends Participant implements AsteroidDestroyer
     private boolean isAccellerating;
     
     /**Allows for the fire to alternate*/
-    private boolen on;
+    private boolean on;
     
     
     
@@ -167,7 +167,7 @@ public class Ship extends Participant implements AsteroidDestroyer
 
                         
             //Generate Debris
-            controller.placeDebris(this.getX(), this.getY());
+            
             
             
             // Tell the controller the ship was destroyed
