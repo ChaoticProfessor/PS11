@@ -37,12 +37,41 @@ public class Alien extends Participant implements ShipDestroyer
         poly.lineTo(20 * scalar, 0 * scalar);
        
         outline = poly;
-        
-        
-        
-        
-        
-        
+ 
+    }
+    /**
+    * When called it creates a random movement sequence that moves the alien ship in 
+    * a diagonal and horizontal path
+    */
+    public void alienMovement ()
+    {
+        int a = RANDOM.nextInt(3);
+
+        if (a == 0)
+        {
+            setVelocity(3, Math.PI * 2 / 3);
+            setVelocity(3, Math.PI);
+            setVelocity(3, Math.PI * 5 / 3);
+        }
+        else if (a == 1)
+        {
+            setVelocity(-3, Math.PI * 2 / 3);
+            setVelocity(-3, Math.PI);
+            setVelocity(-3, Math.PI * 5 / 3);
+        }
+        else if (a == 2)
+        {
+            setVelocity(3, Math.PI * 1 / 3);
+            setVelocity(3, Math.PI);
+            setVelocity(3, Math.PI * 4 / 3);
+        }
+        else
+        {
+            setVelocity(-3, Math.PI * 1 / 3);
+            setVelocity(-3, Math.PI);
+            setVelocity(-3, Math.PI * 4 / 3);
+        }
+
     }
     /**
      * Generate the outline of the Ship
