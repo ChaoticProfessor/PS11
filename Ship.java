@@ -185,12 +185,13 @@ public class Ship extends Participant implements AsteroidDestroyer
         }
     }
     
-     /** Places the fire accordingly
+  
+   /** Places the fire accordingly
      * 
      */
-   public void countdownComplete(Object payload)
+    public void countdownComplete(Object payload)
     {
-        if(on && getIsAccellerating())
+        if(payload.equals("fire") && on && getIsAccellerating())
         {
             Path2D.Double poly = new Path2D.Double();
             poly.moveTo(21, 0);
@@ -205,9 +206,9 @@ public class Ship extends Participant implements AsteroidDestroyer
             poly.closePath();
             outline = poly; 
             on = false;
-            new ParticipantCountdownTimer(this,50);
+            new ParticipantCountdownTimer(this, "fire", 50);
         }
-        else
+        else if(payload.equals("fire") && getIsAccellerating() && !on)
         {
             Path2D.Double poly = new Path2D.Double();
             poly.moveTo(21, 0);
@@ -218,20 +219,22 @@ public class Ship extends Participant implements AsteroidDestroyer
             poly.lineTo(21, 0);
             outline = poly; 
             on = true;
-            new ParticipantCountdownTimer(this,50);
+            new ParticipantCountdownTimer(this, "fire", 50);
         }
-        if(payload.equals("beat1"))
+        
+        else if(payload.equals("beat1"))
         {
           sound.backgroundNoise("beat1");
           if(beatTime > 50)
           {
               beatTime = beatTime - 50;
           }
+          
           new ParticipantCountdownTimer(this, "beat2", beatTime);
             
             
         }
-        if(payload.equals("beat2"))
+        else if(payload.equals("beat2"))
         {
           sound.backgroundNoise("beat2");
           if(beatTime > 50)
@@ -244,5 +247,6 @@ public class Ship extends Participant implements AsteroidDestroyer
         }
         
     }
+    
   
 }
