@@ -50,49 +50,7 @@ public class Bullet extends Participant implements AsteroidDestroyer
 
     }
     
-    public Bullet (Controller controller, Alien alien, Ship ship)
-    {
-        double x=0;
-        double y=0;
-        double direction =0;
-        try {
-        x=alien.getX();
-        y=alien.getY();
-        
-
-        
-        if(alien.getScalar()==2)
-        {
-            direction= (RANDOM.nextInt(6) * Math.PI / 3); 
-        }
-        else if(alien.getScalar()==1 && ship!=null)
-        {
-           direction=  Math.atan((ship.getY()-this.getY())/(ship.getX()-this.getX()));
-        }
-        }
-        catch(NullPointerException e)
-        {
-            
-        }
-        
-        
-        this.controller = controller;
-        setPosition(x, y);
-        setRotation(direction-Math.PI/2);
-        setVelocity(BULLET_SPEED,direction);
-        
-        
-
-        Path2D.Double poly = new Path2D.Double();
-        poly.moveTo(0, 0);
-        poly.lineTo(4,0);
-        poly.lineTo(4,4);
-        poly.lineTo(2,6);
-        poly.lineTo(0,4);
-        poly.closePath();
-        outline = poly;
-
-    }
+    
 
     public void countdownComplete (Object payload)
     {
