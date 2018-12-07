@@ -35,6 +35,10 @@ public class Sounds extends JFrame
     private Clip smallSaucer;
    /** A clip that is played with a big alien*/
     private Clip bigSaucer;
+    
+        /**Background Noises*/
+    private Clip beat1;
+    private Clip beat2;
 
     /**
      * Initializes every variable.
