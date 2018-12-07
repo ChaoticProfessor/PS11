@@ -10,7 +10,7 @@ import asteroids.game.Display;
 import asteroids.game.Participant;
 import asteroids.game.ParticipantCountdownTimer;
 
-public class Alien extends Participant implements ShipDestroyer
+public class Alien extends Participant implements ShipDestroyer , AsteroidDestroyer
 {
 
     /** The alien shape */
@@ -22,6 +22,8 @@ public class Alien extends Participant implements ShipDestroyer
     private int horizontal;
     
     private int Scalar;
+    
+    
 
     public Alien (double x, double y, int scalar,Controller controller)
     {
@@ -44,6 +46,19 @@ public class Alien extends Participant implements ShipDestroyer
         
         new ParticipantCountdownTimer(this,"diagonal", 500);
         new ParticipantCountdownTimer(this,"switch", 10000);
+        new ParticipantCountdownTimer(this,"shoot",(int)(Math.random()*3000)+3000);
+    }
+    
+    public double getSpeed()
+    {
+        if(getScalar()==1)
+        {
+            return 5* horizontal;
+        }
+        else
+        {
+            return 3*horizontal;
+        }
     }
     
     public int getScalar()
@@ -53,6 +68,11 @@ public class Alien extends Participant implements ShipDestroyer
 
     public void countdownComplete(Object payload)
     {
+        if (payload=="shoot")
+        {
+            controller.alienShoot();
+            new ParticipantCountdownTimer(this,"shoot",(int)(Math.random()*3000)+3000);
+        }
         
         if(payload == "diagonal")
         {
@@ -60,13 +80,13 @@ public class Alien extends Participant implements ShipDestroyer
 
         if (a == 0)
         {
-            setVelocity(3 * horizontal, Math.PI * 2 / 3);
+            setVelocity(getSpeed(), Math.PI * 2 / 3);
             new ParticipantCountdownTimer(this,"diagonal", 500);
 
         }
         else
         {
-            setVelocity(3 * horizontal, Math.PI * 4 / 3);
+            setVelocity(getSpeed(), Math.PI * 4 / 3);
             new ParticipantCountdownTimer(this,"diagonal", 500);
 
         }
@@ -96,7 +116,7 @@ public class Alien extends Participant implements ShipDestroyer
     @Override
     public void collidedWith (Participant p)
     {
-        if (p instanceof AsteroidDestroyer)
+        if (p instanceof Bullet||p instanceof Ship ||p instanceof Asteroid)
         {
             // Expire the asteroid
             Participant.expire(this);
