@@ -28,6 +28,12 @@ public class Ship extends Participant implements AsteroidDestroyer
     /**Allows for the fire to alternate*/
     private boolean on;
     
+    private int beatTime;
+    
+    private Sounds sound;
+    
+    
+    
     
     
     
@@ -40,6 +46,9 @@ public class Ship extends Participant implements AsteroidDestroyer
         this.controller = controller;
         setPosition(x, y);
         setRotation(direction);
+        
+        beatTime = 2000;
+        sound = new Sounds();
 
         Path2D.Double poly = new Path2D.Double();
         poly.moveTo(21, 0);
@@ -209,6 +218,28 @@ public class Ship extends Participant implements AsteroidDestroyer
             outline = poly; 
             on = true;
             new ParticipantCountdownTimer(this,50);
+        }
+        if(payload.equals("beat1"))
+        {
+          sound.backgroundNoise("beat1");
+          if(beatTime > 50)
+          {
+              beatTime = beatTime - 50;
+          }
+          new ParticipantCountdownTimer(this, "beat2", beatTime);
+            
+            
+        }
+        if(payload.equals("beat2"))
+        {
+          sound.backgroundNoise("beat2");
+          if(beatTime > 50)
+          {
+              beatTime = beatTime - 50;
+          }
+          new ParticipantCountdownTimer(this, "beat1", beatTime);
+            
+            
         }
         
     }
