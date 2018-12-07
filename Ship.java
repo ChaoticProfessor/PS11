@@ -212,6 +212,5 @@ public class Ship extends Participant implements AsteroidDestroyer
         }
         
     }
-
   
 }
