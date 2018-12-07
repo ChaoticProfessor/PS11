@@ -50,6 +50,9 @@ public class Controller implements KeyListener, ActionListener
     /**Score Value*/
     private int score;
     
+    /**Sounds*/
+    private Sounds sounds;
+    
     /** number of bullets in the game */
     public int numBullets;
 
@@ -72,6 +75,9 @@ public class Controller implements KeyListener, ActionListener
 
         // Record the display object
         display = new Display(this);
+        
+        //Establish the sounds
+        sounds = new Sounds();
 
         // Bring up the splash screen and start the refresh timer
         splashScreen();
@@ -181,6 +187,7 @@ public class Controller implements KeyListener, ActionListener
             Participant.expire(alien);
             alien = new Alien(375, 0, 2,this);
             addParticipant(alien);
+            sounds.soundCall("bigAlien");
             
         }
         else if(level>=3)
@@ -188,6 +195,7 @@ public class Controller implements KeyListener, ActionListener
             Participant.expire(alien);
             alien = new Alien(375, 0, 1,this);
             addParticipant(alien);
+            sounds.soundCall("smallAlien");
         }
         
         
@@ -290,6 +298,7 @@ public class Controller implements KeyListener, ActionListener
 
         if (size == 2)
         {
+            sounds.soundCall("largeDestroyed");
             // Creates two smaller Asteroids of semi-random size
             addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(2), a.getX(), a.getY(), 3, this));
             addParticipant(new Asteroid(RANDOM.nextInt(3), RANDOM.nextInt(2), a.getX(), a.getY(), 3, this));
@@ -297,6 +306,7 @@ public class Controller implements KeyListener, ActionListener
         }
         else if (size == 1)
         {
+            sounds.soundCall("mediumDestroyed");
             // creates two small Asteroids
             addParticipant(new Asteroid(RANDOM.nextInt(3), 0, a.getX(), a.getY(), 3, this));
             addParticipant(new Asteroid(RANDOM.nextInt(3), 0, a.getX(), a.getY(), 3, this));
@@ -304,6 +314,7 @@ public class Controller implements KeyListener, ActionListener
         }
         else
         {
+            sounds.soundCall("smallDestroyed");
             score = score + 100;
         }
 
@@ -328,10 +339,12 @@ public class Controller implements KeyListener, ActionListener
         if (alien.getScalar()==2)
         {
             score = score + 200;
+             sounds.soundCall("bigAlien");
         }
         else
         {
             score = score + 1000;
+             sounds.soundCall("smallAlien");
         }
         placeDebris(alien.getX(), alien.getY());
         
