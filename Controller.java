@@ -471,7 +471,15 @@ public class Controller implements KeyListener, ActionListener
                numBullets = 0;
                placeAsteroids();
                placeShip();
-               placeAlien();
+               if (sounds.bigSaucer.isRunning())
+               {
+                   sounds.bigSaucer.stop();
+               }
+               else if(sounds.smallSaucer.isRunning())
+               {
+                   sounds.smallSaucer.stop();
+               }
+               
             }
             //If there are lives and asteroids left, respawns the ship
             else if(ship==null)
