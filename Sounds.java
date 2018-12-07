@@ -52,6 +52,8 @@ public class Sounds extends JFrame
         smallDestroyed = createClip("/sounds/bangSmall.wav");
         thrust = createClip("/sounds/thrust.wav");
         bigSaucer = createClip("/sounds/saucerBig.wav");
+       beat1 = createClip("/sounds/beat1.wav");
+        beat2 = createClip("/sounds/beat2.wav");
         
     }
 
