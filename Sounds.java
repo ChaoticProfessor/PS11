@@ -85,6 +85,29 @@ public class Sounds extends JFrame
             return null;
         }
     }
+    /**Background Noises*/
+    public void backgroundNoise (String sound)
+    {
+
+        if (sound.equals("beat1") && beat1 != null)
+        {
+            if (beat1.isRunning())
+            {
+                beat1.stop();
+            }
+            beat1.setFramePosition(0);
+            beat1.start();  
+        }
+        else if (sound.equals("beat2") && beat2 != null)
+        {
+            if (beat2.isRunning())
+            {
+                beat2.stop();
+            }
+            beat2.setFramePosition(0);
+            beat2.start();        
+        }
+    }
 
     /**
      * Plays sounds depending on which button was clicked.
