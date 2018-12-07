@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.Iterator;
 import javax.swing.*;
 import asteroids.participants.Alien;
+import asteroids.participants.AlienBullet;
 import asteroids.participants.Asteroid;
 import asteroids.participants.Debris;
 import asteroids.participants.Ship;
@@ -23,8 +24,12 @@ public class Controller implements KeyListener, ActionListener
     
     /** The alien ship if active or null otherwise*/
     private Alien alien;
+    
+    private Alien alien1;
 
     private Bullet bullet;
+    
+    private AlienBullet alienBullet;
 
     /** When this timer goes off, it is time to refresh the animation */
     private Timer refreshTimer;
@@ -169,20 +174,24 @@ public class Controller implements KeyListener, ActionListener
 
     public void placeAlien ()
     {
+    
         if (level == 2)
         {
 
             Participant.expire(alien);
-            alien = new Alien(450, 450, 2,this);
+            alien = new Alien(375, 0, 2,this);
             addParticipant(alien);
             
         }
         else if(level>=3)
         {
             Participant.expire(alien);
-            alien = new Alien(450, 450, 1,this);
+            alien = new Alien(375, 0, 1,this);
             addParticipant(alien);
         }
+        
+        
+        
     }
 
     /**
@@ -336,12 +345,12 @@ public class Controller implements KeyListener, ActionListener
     }
     
     
-    private void alienShoot()
+    public void alienShoot()
     {
         
-        bullet = new Bullet(this,alien,ship);
-        addParticipant(bullet);
-        scheduleTransition(2500);
+        alienBullet = new AlienBullet(this,alien,ship);
+        addParticipant(alienBullet);
+        
     }
    
 
