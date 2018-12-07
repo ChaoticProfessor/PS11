@@ -508,6 +508,7 @@ public class Controller implements KeyListener, ActionListener
         if ((e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S
                 || e.getKeyCode() == KeyEvent.VK_SPACE) && ship != null)
         {
+            sounds.soundCall("fire");
             numBullets++;
             bullet = new Bullet(this,ship);
             addParticipant(bullet);
